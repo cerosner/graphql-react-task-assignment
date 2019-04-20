@@ -19,44 +19,17 @@ const graphqlHttp = require('express-graphql')
 
 const { buildSchema } = require('graphql')
 /*
-  parses and converts data to be used by
-  middleware that takes a `multi-line template
-  literal string` that defines our schemas
+  parses and converts data to be used by middleware
+  that takes a `multi-line template literal string`
+  that defines our schemas
 
-  must adhere to GraphQL command specifications that are
-  looking for certain keywords
-
-  --- BOILERPLATE ---
-
-    graphqlHttp({
-      schema: buildSchema(`
-        type RootQuery {
-          data: [typeof data!]! // ! = not null
-        }
-
-        type RootMutation { // methods
-          addData(param: typeof param): typeof data
-          updateData(): ...
-          deleteData(): ...
-        }
-
-        schema {
-          query: fetch data from RootQuery
-          mutation: change data from RootMutation
-        }
-      `),
-      rootValue: {
-        // must use same names found in schema definition
-        data: () => {
-          return data
-        },
-        addData: (args) => {  // args carries obj of all params
-          store args.param
-        }
-      },
-      graphiql: boolean
-    })
-
+  must adhere to GraphQL command specifications that
+  are looking for certain keywords:
+    - schema
+      . query: entry point for GET requests
+      . mutation: entry point for POST/PUT/DELETE requests
+    - type  // custom objects
+    - input // complex objects
 */
 
 const app = express()
@@ -99,10 +72,12 @@ app.use('/graphql', graphqlHttp({
     createTask: (args) => {
       const task = {
         id: Math.random().toString(),
-        title: args.title,
-        description: args.description
+        title: args.taskInput.title,
+        description: args.taskInput.description
       }
+
       tasks.push(task)
+      return task
     }
   },
   graphiql: true
