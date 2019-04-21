@@ -2,9 +2,9 @@
   "name": "graphql-react-task-assignment",
   "version": "1.0.0",
   "description": "testing graphql implementaion",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cassie Rosner",
@@ -13,7 +13,9 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
-    "graphql": "^14.2.1"
+    "graphql": "^14.2.1",
+    "pg": "^7.10.0",
+    "sequelize": "^5.7.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

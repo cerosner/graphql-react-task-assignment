@@ -1,5 +1,34 @@
-/*
+// GraphQL is a typed language
 
+/* graphqlHttp from express-graphql package
+
+  parses and converts data to be used by middleware
+  that takes a `multi-line template literal string`
+  that defines our schemas
+
+  must adhere to GraphQL command specifications that
+  are looking for certain keywords:
+    - schema
+      . query: entry point for GET requests
+      . mutation: entry point for POST/PUT/DELETE requests
+    - type  // custom objects
+    - input // complex objects
+*/
+
+/* { buildSchema } from graphql package
+
+  middleware that routes requests through GraphQL
+  query parser '/graphql' endpoint to be handled
+  by the schemas that we define to be forwarded
+  to the associated resolver endpoints that we create
+
+  takes an obj with 3 properties to configure apis
+    - schema    // takes buildSchema()
+    - rootValue // obj of resolver functions
+    - graphiql  // optional UI to test apis @ '/graphql'
+*/
+
+/*
 app.use('graphql', graphqlHttp({
   schema: buildSchema(`
     type RootQuery {
@@ -28,5 +57,4 @@ app.use('graphql', graphqlHttp({
   },
   graphiql: boolean
 }))
-
 */
