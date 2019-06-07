@@ -1,15 +1,17 @@
 {
   "name": "graphql-react-task-assignment",
   "version": "1.0.0",
-  "description": "testing graphql implementaion",
+  "description": "testing graphql implementation",
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretty": "prettier --write *.js"
   },
   "author": "Cassie Rosner",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
