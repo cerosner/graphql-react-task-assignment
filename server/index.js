@@ -1,10 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const graphqlHttp = require('express-graphql')
+const bcrypt = require('bcryptjs')
 const { buildSchema } = require('graphql')
-const { db, Tasks } = require('../database')
-const PORT = 8080
+const { db, Tasks, Users } = require('../database')
 
+const PORT = 8080
 const app = express()
 
 app.use(bodyParser.json())
@@ -17,9 +18,20 @@ app.use('/graphql', graphqlHttp({
       description: String!
     }
 
+    type User {
+      id: ID!
+      email: String!
+      password: String
+    }
+
     input TaskInput {
       title: String!
       description: String!
+    }
+
+    input UserInput {
+      email: String!
+      password: String!
     }
 
     type RootQuery {
@@ -29,6 +41,7 @@ app.use('/graphql', graphqlHttp({
     type RootMutation {
       createTask(taskInput: TaskInput!): Task!
       deleteTask(taskId: ID!): Task
+      createUser(userInput: UserInput): User
     }
 
     schema {
@@ -47,12 +60,8 @@ app.use('/graphql', graphqlHttp({
     },
     createTask: args => {
       const { title, description } = args.taskInput
+      const newTask = { title, description }
 
-      const newTask = {
-        title,
-        description
-      }
-      
       return Tasks.create(newTask)
       .then(createdTask => createdTask)
       .catch(err => {
@@ -62,11 +71,33 @@ app.use('/graphql', graphqlHttp({
     },
     deleteTask: args => {
       Tasks.findOne({
-        where: {
-          id: args.taskId
-        }
+        where: { id: args.taskId }
       })
       .then(taskToDelete => taskToDelete.destroy())
+      .catch(err => {
+        console.log(err)
+        throw err
+      })
+    },
+    createUser: args => {
+      const { email, password } = args.userInput
+      let newUser = { email, password }
+
+      return bcrypt.hash(password, 12)
+      .then(hashedPassword => {
+        newUser.password = hashedPassword
+
+        return Users.create(newUser)
+        .then(createdUser => {
+          createdUser.password = null
+
+          return createdUser
+        })
+        .catch(err => {
+          console.log(err)
+          throw err
+        })
+      })
       .catch(err => {
         console.log(err)
         throw err
