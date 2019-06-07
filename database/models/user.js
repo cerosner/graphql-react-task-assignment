@@ -1,5 +1,7 @@
 const db = require('../db')
-const { STRING } = require('sequelize')
+const Sequelize = require('sequelize')
+
+const { STRING } = Sequelize
 
 const User = db.define('user', {
   email: {
