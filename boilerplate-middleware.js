@@ -1,6 +1,6 @@
 // GraphQL is a typed language
 
-/* graphqlHttp from express-graphql package
+/* { buildSchema } from `graphql package`
 
   parses and converts data to be used by middleware
   that takes a `multi-line template literal string`
@@ -15,7 +15,7 @@
     - input // complex objects
 */
 
-/* { buildSchema } from graphql package
+/* graphqlHttp from `express-graphql` package
 
   middleware that routes requests through GraphQL
   query parser '/graphql' endpoint to be handled
